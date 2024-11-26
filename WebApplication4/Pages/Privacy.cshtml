@@ -1,8 +1,58 @@
 ﻿@page
 @model PrivacyModel
 @{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Погода на карте";
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div>
+    <h1>Погода по координатам</h1>
+    <input type="text" id="latitude" placeholder="Широта" />
+    <input type="text" id="longitude" placeholder="Долгота" />
+    <button id="getWeather">Получить погоду</button>
+    <div id="weatherInfo"></div>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js">
+                const apiKey = 'f424cd597aa650f42de54a20d167d6d5'; // Замените на ваш API
+
+        document.getElementById('getWeather').addEventListener('click', function () {
+            const lat = document.getElementById('latitude').value;
+            const lon = document.getElementById('longitude').value;
+
+            if (lat && lon) {
+                getWeather(lat, lon);
+                showMap(lat, lon);
+            } else {
+                alert('Пожалуйста, введите координаты.');
+            }
+        });
+
+        function getWeather(lat, lon) {
+            fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
+                .then(response => response.json())
+                .then(data => {
+                    const weatherInfo = `
+                                <h2>Погода:</h2>
+                                <p>Температура: ${data.main.temp} °C</p>
+                                <p>Состояние: ${data.weather[0].description}</p>
+                            `;
+                    document.getElementById('weatherInfo').innerHTML = weatherInfo;
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    alert('Не удалось получить погоду. Проверьте координаты.');
+                });
+        }
+
+        function showMap(lat, lon) {
+            const map = L.map('map').setView([lat, lon], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19
+            }).addTo(map);
+            L.marker([lat, lon]).addTo(map)
+                .bindPopup('Вы находитесь здесь!')
+                .openPopup();
+        }
+
+    </script>
+</div>
