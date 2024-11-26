@@ -26,7 +26,7 @@ const displayWeather = (data) => {
 const getWeatherIcon = (description) => {
     if (description.includes('clear')) return 'sunny.png'; 
     if (description.includes('rain')) return 'rainy.png'; 
-    return 'cloudy.png'; 
+    return 'img/cloudy.png'; 
 };
 
 const handleWeatherRequest = async () => {

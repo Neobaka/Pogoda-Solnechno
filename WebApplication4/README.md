@@ -16,5 +16,7 @@
 ## Установка
 1. Получите ключ API на [OpenWeatherMap](https://openweathermap.org/api).
 2. Замените `API_KEY` в `script.js` на ваш ключ.
-3. ЗЗапустите проект.
+3. Запустите проект
 
+## Деплой
+Деплой происходит через GitHub pages с использованием static HTML
